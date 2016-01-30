@@ -1,6 +1,6 @@
 function preload() {
     game.load.image('play', 'assets/img/play.png');
-    game.load.image('fairy', 'assets/img/pc.png');
+    game.load.spritesheet('fairy', 'assets/img/fairy.png', 128, 128);
     game.load.image('heal', 'assets/img/heal.png');
     game.load.image('attack', 'assets/img/attack.png');
     game.load.image('buff', 'assets/img/buff.png');
