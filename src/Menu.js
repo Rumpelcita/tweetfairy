@@ -1,6 +1,9 @@
 function preload() {
     game.load.image('play', 'assets/img/play.png');
     game.load.image('fairy', 'assets/img/pc.png');
+    game.load.image('heal', 'assets/img/heal.png');
+    game.load.image('attack', 'assets/img/attack.png');
+    game.load.image('buff', 'assets/img/buff.png');
     game.load.audio('music', 'assets/sound/main.mp3');
 }
 
@@ -14,8 +17,8 @@ function createMenu(){
 		var playButton = game.add.button(160,320,'play', playTheGame,this);
 		playButton.anchor.setTo(0.5,0.5);
         music = game.add.audio('music');
-        music.loop = true;
-        music.play();
+        // music.loop = true;
+        // music.play();
 	}
 
 function playTheGame(){
