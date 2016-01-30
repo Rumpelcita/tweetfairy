@@ -35,7 +35,6 @@ function render(){
 }
 
 function menu(){
-    music.stop();
     game.state.start("Menu");
 }
 
