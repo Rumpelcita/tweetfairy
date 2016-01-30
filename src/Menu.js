@@ -1,5 +1,6 @@
 function preload() {
     game.load.image('play', 'assets/img/play.png');
+    game.load.image('fairy', 'assets/img/pc.png');
 }
 
 function createMenu(){
