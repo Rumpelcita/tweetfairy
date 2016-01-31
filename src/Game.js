@@ -113,7 +113,7 @@ function spawnSpells(){
         3 : 'buff_3',
     }
 
-    if (spells.countLiving() < spells.max) {
+    if (spells.countLiving() < spells.max && spell_count > 0) {
         spawn_y = game.world.height - 585;
         spawn_x = game.rnd.integerInRange(5, 300);
         var spell_type = game.rnd.integerInRange(1, 5);
@@ -135,6 +135,7 @@ function spawnSpells(){
         spell.body.setSize(90, 100, 5, 0);
         spell.body.gravity.y = spells_speed;
         spells.add(spell);
+        loading = 0;
     }
 }
 

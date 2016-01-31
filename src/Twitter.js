@@ -34,13 +34,13 @@ function Twitter() {
                     var tweet = replies[i].text;
                     var twitter_user = replies[i].user.screen_name;
 
-                    if (tweet.search("#attacktweetfairy") != -1){
+                    if (tweet.search("#tfatk") != -1){
                         spell_deck.attacks.push([twitter_user, tweet]);
                         spell_count ++;
-                    } else if (tweet.search("#healtweetfairy") != -1){
+                    } else if (tweet.search("#tfheal") != -1){
                         spell_deck.heals.push([twitter_user, tweet]);
                         spell_count ++;
-                    } else if (tweet.search("#bufftweetfairy") != -1){
+                    } else if (tweet.search("#tfbuff") != -1){
                         spell_deck.buffs.push([twitter_user, tweet]);
                         spell_count ++;
                     }
