@@ -1,17 +1,15 @@
 function create(){
     tweets = new Twitter();
-    console.log(spell_deck)
-    restart_deck = 0;
     loading = 1;
     game.stage.backgroundColor = '#ffffff';
     background = game.add.tileSprite(0, 0, 402, 626, "background");
     game.physics.startSystem(Phaser.Physics.ARCADE);
     twitter_sprite = game.add.sprite(game.world.width - 375, game.world.height - 75, 'tweet');
-    twitter_user_text = game.add.text(game.world.width - 345, game.world.height - 80, '@TweetfairyGame:', { font: "bold 24px brain_flowerregular", fill: '#28a9e0' });
+    twitter_user_text = game.add.text(game.world.width - 345, game.world.height - 80, '@TweetfairyGame', { font: "bold 24px brain_flowerregular", fill: '#28a9e0' });
     twitter_text = game.add.text(game.world.width - 345, game.world.height - 60, 'Casting spells...', { font: "bold 24px brain_flowerregular", fill: '#000' });
 
     score = 0;
-    score_text = game.add.text(252, 10, 'score:' + score, { font: "bold 32px brain_flowerregular", fill: '#000' });
+    score_text = game.add.text(252, 15, 'score:' + score, { font: "bold 32px brain_flowerregular", fill: '#000' });
     player = game.add.sprite(game.world.width/2, game.world.height - 230, 'fairy');
     game.physics.arcade.enable(player);
     player.body.bounce.y = 0.2;
@@ -25,12 +23,12 @@ function create(){
 
     player.current_health = 75;
     player.max_health = 75;
-    health_tooltip = game.add.text(42, 10, 'health:', { font: "bold 32px brain_flowerregular", fill: '#000' });
-    health_text = game.add.text(115, 10, player.current_health + '/' + player.max_health, { font: "bold 32px brain_flowerregular", fill: '#ff0707' });
+    health_tooltip = game.add.text(52, 15, 'health:', { font: "bold 32px brain_flowerregular", fill: '#000' });
+    health_text = game.add.text(115, 15, player.current_health + '/' + player.max_health, { font: "bold 32px brain_flowerregular", fill: '#ff0707' });
     health_sprite = game.add.sprite(18, 18, 'heart');
 
     spells = game.add.group();
-        score += 1;game.physics.enable(spells);
+    game.physics.enable(spells);
 
     spells.max = 9;
     spells.enableBody = true;
@@ -38,6 +36,10 @@ function create(){
 
     timer = game.time.create(false);
     timer.loop(800, spawnSpells, this);
+    timer.start();
+
+    timer = game.time.create(false);
+    timer.loop(3500, spawnTwitter, this);
     timer.start();
 
     cursors = game.input.keyboard.createCursorKeys();
@@ -94,8 +96,6 @@ function spawnSpells(){
         1 : 'heal',
         2 : 'attack',
         3 : 'buff',
-        4 : 'attack',
-        5 : 'attack',
     }
     var heal_spells = {
         1 : 'heal_1',
@@ -116,26 +116,45 @@ function spawnSpells(){
     if (spells.countLiving() < spells.max && spell_count > 0) {
         spawn_y = game.world.height - 585;
         spawn_x = game.rnd.integerInRange(5, 300);
-        var spell_type = game.rnd.integerInRange(1, 5);
-        if (spell_types[spell_type] == 'heal'){
+        var spell_type = game.rnd.integerInRange(1, 3);
+        console.log(spell_deck.heals);
+        if (spell_types[spell_type] == 'heal' && spell_deck.heals.length > 0){
             var spell = game.add.sprite(spawn_x, spawn_y, heal_spells[game.rnd.integerInRange(1, 3)]);
-            var spell_text = game.add.text(0, 0, '#' + spell_types[spell_type] + 'fairy', { font: "bold 18px Lato", fill: '#b6e093' });
-        } else if (spell_types[spell_type] == 'attack'){
+            var spell_text = game.add.text(0, 0, '#healtf', { font: "bold 18px Lato", fill: '#b6e093' });
+            var deck_range = game.rnd.integerInRange(0, spell_deck.heals.length -1);
+            var owner_text = game.add.text(0, 0, '@' + spell_deck.heals[deck_range][0], { font: "bold 18px Lato", fill: '#b6e093' });
+            twitter_user_text.text = '@' + spell_deck.heals[deck_range][0];
+            twitter_text.text = spell_deck.heals[deck_range][1];
+        } else if (spell_types[spell_type] == 'attack'  && spell_deck.attacks.length > 0){
             var spell = game.add.sprite(spawn_x, spawn_y, attack_spells[game.rnd.integerInRange(1, 3)]);
-            var spell_text = game.add.text(0, 0, '#' + spell_types[spell_type] + 'fairy', { font: "bold 18px Lato", fill: '#e45b4a' });
-        } else if (spell_types[spell_type] == 'buff'){
+            var spell_text = game.add.text(0, 0, '#atktf', { font: "bold 18px Lato", fill: '#e45b4a' });
+            var deck_range = game.rnd.integerInRange(0, spell_deck.attacks.length - 1);
+            var owner_text = game.add.text(0, 0, '@' + spell_deck.attacks[deck_range][0], { font: "bold 18px Lato", fill: '#e45b4a' });
+            twitter_user_text.text = '@' + spell_deck.attacks[deck_range][0];
+            twitter_text.text = spell_deck.attacks[deck_range][1];
+        } else if (spell_types[spell_type] == 'buff' && spell_deck.buffs.length > 0){
             var spell = game.add.sprite(spawn_x, spawn_y, buff_spells[game.rnd.integerInRange(1, 3)]);
-            var spell_text = game.add.text(0, 0, '#' + spell_types[spell_type] + 'fairy', { font: "bold 18px Lato", fill: '#b3d7d7' });
+            var spell_text = game.add.text(0, 0, '#bufftf', { font: "bold 18px Lato", fill: '#b3d7d7' });
+            var deck_range = game.rnd.integerInRange(0, spell_deck.buffs.length - 1);
+            var owner_text = game.add.text(0, 0, '@' + spell_deck.buffs[deck_range][0], { font: "bold 18px Lato", fill: '#b3d7d7' });
+            twitter_user_text.text = '@' + spell_deck.buffs[deck_range][0];
+            twitter_text.text = spell_deck.buffs[deck_range][1];
         }
-        spell_text.anchor.setTo(0, 0.5);
-        spell.addChild(spell_text);
-        spell.spell_type = spell_types[spell_type];
+        if (spell && spell_text){
+            spell_text.anchor.setTo(0, 0.5);
+            owner_text.anchor.setTo(0, 1.2);
+            spell.addChild(spell_text);
+            spell.addChild(owner_text);
+            spell.spell_type = spell_types[spell_type];
 
-        game.physics.enable(spell);
-        spell.body.setSize(90, 100, 5, 0);
-        spell.body.gravity.y = spells_speed;
-        spells.add(spell);
-        loading = 0;
+            game.physics.enable(spell);
+            spell.body.setSize(90, 100, 5, 0);
+            spell.body.gravity.y = spells_speed;
+            spells.add(spell);
+            loading = 0;
+        } else {
+            spawnSpells();
+        }
     }
 }
 
@@ -165,6 +184,11 @@ function fairyStatus(player, spell){
         game.paused = true;
         console.log('game_end');
     }
+}
+
+function spawnTwitter(){
+    tweets = null;
+    tweets = new Twitter();
 }
 
 var game = new Phaser.Game(400, 625, Phaser.AUTO, '');
