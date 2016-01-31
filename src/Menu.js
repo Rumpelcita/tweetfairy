@@ -12,6 +12,7 @@ function preload() {
     game.load.image('buff_3', 'assets/img/items/gatotaza.png');
     game.load.image('background', 'assets/img/fondo.png');
     game.load.image('heart', 'assets/img/corazon.png');
+    game.load.image('tweet', 'assets/img/tweeter.png');
     game.load.audio('music', 'assets/sound/main.mp3');
 }
 
