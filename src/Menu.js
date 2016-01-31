@@ -14,19 +14,21 @@ function preload() {
     game.load.image('main', 'assets/img/p1.png');
     game.load.image('heart', 'assets/img/corazon.png');
     game.load.image('tweet', 'assets/img/tweeter.png');
+    game.load.image('tutorial', 'assets/img/p2.png');
+    game.load.image('gameover', 'assets/img/gameover.png');
     game.load.audio('music', 'assets/sound/main.mp3');
 }
 
 function createMenu(){
         game.stage.backgroundColor = '#ffffff';
         background = game.add.tileSprite(0, 0, 402, 626, "main");
-		var playButton = game.add.button(game.world.width/2,game.world.height - 150,'play', playTheGame,this);
+		var playButton = game.add.button(game.world.width/2,game.world.height - 150,'play', playTutorial,this);
 		playButton.anchor.setTo(0.5,0.5);
         music = game.add.audio('music');
         // music.loop = true;
         // music.play();
 	}
 
-function playTheGame(){
-		game.state.start("Game");
-	}
+function playTutorial(){
+		game.state.start("Tutorial");
+}

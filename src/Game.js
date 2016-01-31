@@ -1,12 +1,11 @@
 function create(){
-    tweets = new Twitter();
     loading = 1;
     game.stage.backgroundColor = '#ffffff';
     background = game.add.tileSprite(0, 0, 402, 626, "background");
     game.physics.startSystem(Phaser.Physics.ARCADE);
     twitter_sprite = game.add.sprite(game.world.width - 375, game.world.height - 75, 'tweet');
-    twitter_user_text = game.add.text(game.world.width - 345, game.world.height - 80, '@TweetfairyGame', { font: "bold 24px brain_flowerregular", fill: '#28a9e0' });
-    twitter_text = game.add.text(game.world.width - 345, game.world.height - 60, 'Casting spells...', { font: "bold 24px brain_flowerregular", fill: '#000' });
+    twitter_user_text = game.add.text(game.world.width - 345, game.world.height - 80, '@TweetfairyGame', { font: "bold 22px brain_flowerregular", fill: '#28a9e0' });
+    twitter_text = game.add.text(game.world.width - 345, game.world.height - 60, 'Casting spells...', { font: "bold 22px brain_flowerregular", fill: '#000', wordWrap: true, wordWrapWidth: 340 });
 
     score = 0;
     score_text = game.add.text(252, 15, 'score:' + score, { font: "bold 32px brain_flowerregular", fill: '#000' });
@@ -38,9 +37,9 @@ function create(){
     timer.loop(800, spawnSpells, this);
     timer.start();
 
-    timer = game.time.create(false);
-    timer.loop(3500, spawnTwitter, this);
-    timer.start();
+    timer_twitter = game.time.create(false);
+    timer_twitter.loop(3500, spawnTwitter, this);
+    timer_twitter.start();
 
     cursors = game.input.keyboard.createCursorKeys();
 }
@@ -146,7 +145,6 @@ function spawnSpells(){
             spell.addChild(spell_text);
             spell.addChild(owner_text);
             spell.spell_type = spell_types[spell_type];
-
             game.physics.enable(spell);
             spell.body.setSize(90, 100, 5, 0);
             spell.body.gravity.y = spells_speed;
@@ -154,6 +152,9 @@ function spawnSpells(){
             loading = 0;
         } else {
             spawnSpells();
+            loading = 1;
+            twitter_user_text.text = '@TweetfairyGame';
+            twitter_text.text = 'Casting spells...';
         }
     }
 }
@@ -181,8 +182,7 @@ function fairyStatus(player, spell){
     health_text.text = player.current_health + '/' + player.max_health;
     spell.kill();
     if (player.current_health <= 0){
-        game.paused = true;
-        console.log('game_end');
+        game.state.start("Over");
     }
 }
 
@@ -193,6 +193,7 @@ function spawnTwitter(){
 
 var game = new Phaser.Game(400, 625, Phaser.AUTO, '');
 game.state.add("Menu", { preload: preload, create: createMenu } );
+game.state.add("Tutorial", { create: createTutorial } );
 game.state.add("Game",{ create: create, update: update, render: render });
 game.state.add("Over", { create: createGameOver } );
 game.state.start("Menu");
