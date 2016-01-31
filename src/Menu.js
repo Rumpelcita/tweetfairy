@@ -1,6 +1,7 @@
 function preload() {
     game.load.image('replay', 'assets/img/replay_btn.png');
     game.load.image('play', 'assets/img/btn_play.png');
+    game.load.image('star', 'assets/img/star.png');
     game.load.spritesheet('fairy', 'assets/img/fairy.png', 128, 128);
     game.load.image('heal_1', 'assets/img/items/muffin.png');
     game.load.image('heal_2', 'assets/img/items/caramelos.png');

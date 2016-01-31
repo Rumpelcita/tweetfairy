@@ -121,7 +121,6 @@ function spawnSpells(){
         spawn_y = game.world.height - 585;
         spawn_x = game.rnd.integerInRange(5, 300);
         var spell_type = game.rnd.integerInRange(1, 3);
-        console.log(spell_deck.heals);
         if (spell_types[spell_type] == 'heal' && spell_deck.heals.length > 0){
             var spell = game.add.sprite(spawn_x, spawn_y, heal_spells[game.rnd.integerInRange(1, 3)]);
             var spell_text = game.add.text(0, 0, '#healtf', { font: "bold 18px Lato", fill: '#b6e093' });
