@@ -7,8 +7,8 @@ function create(){
     background = game.add.tileSprite(0, 0, 402, 626, "background");
     game.physics.startSystem(Phaser.Physics.ARCADE);
     twitter_sprite = game.add.sprite(game.world.width - 375, game.world.height - 75, 'tweet');
-    twitter_user_text = game.add.text(game.world.width - 365, game.world.height - 80, '@TweetfairyGame:', { font: "bold 24px brain_flowerregular", fill: '#28a9e0' });
-    twitter_text = game.add.text(game.world.width - 365, game.world.height - 60, 'Casting spells...', { font: "bold 24px brain_flowerregular", fill: '#000' });
+    twitter_user_text = game.add.text(game.world.width - 345, game.world.height - 80, '@TweetfairyGame:', { font: "bold 24px brain_flowerregular", fill: '#28a9e0' });
+    twitter_text = game.add.text(game.world.width - 345, game.world.height - 60, 'Casting spells...', { font: "bold 24px brain_flowerregular", fill: '#000' });
 
     score = 0;
     score_text = game.add.text(252, 10, 'score:' + score, { font: "bold 32px brain_flowerregular", fill: '#000' });
@@ -45,8 +45,10 @@ function create(){
 
 function update(){
     background.tilePosition.y += 2;
-    score += 1;
-    score_text.text = 'score:' + score;
+    if (loading == 0){
+        score += 1;
+        score_text.text = 'score:' + score;
+    }
     spells.forEach(function(spell){
         if (spell.inWorld == false){
             spell.kill();
@@ -152,9 +154,9 @@ function fairyStatus(player, spell){
             player.current_health = 0;
         }
     } else if (spell.spell_type == 'buff') {
-            spells_speed = Math.floor(spells_speed/2);
-            score += 15;
-            score_text.text = 'score:' + score;
+        spells_speed = Math.floor(spells_speed/2);
+        score += 15;
+        score_text.text = 'score:' + score;
     }
     health_text.text = player.current_health + '/' + player.max_health;
     spell.kill();
