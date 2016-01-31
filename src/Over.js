@@ -1,12 +1,17 @@
 function createGameOver(){
     game.stage.backgroundColor = '#ffffff';
     background = game.add.tileSprite(0, 0, 402, 626, "gameover");
-    var final_score_text = game.add.text(game.world.width - 300, game.world.height - 120, 'score:', { font: "bold 32px brain_flowerregular", fill: '#000' });
-    var final_score = game.add.text(game.world.width - 300, game.world.height - 110, score, { font: "bold 32px brain_flowerregular", fill: '#000' });
-    var playButton = game.add.button(game.world.width - 300, game.world.height - 95,'play', playTutorial,this);
+    var final_score_text = game.add.text(game.world.width/2, game.world.height/2, 'score:' + score, { font: "bold 42px brain_flowerregular", fill: '#000' });
+    final_score_text.anchor.setTo(0.5, 0.5);
+    var playButton = game.add.button(game.world.width - 300, game.world.height - 115,'replay', replayTutorial,this);
+    overmusic = game.add.audio('overmusic');
+    overmusic.loop = true;
+    overmusic.play();
     playButton.anchor.setTo(0.5,0.5);
 }
 
-function playTutorial(){
+function replayTutorial(){
+        overmusic.stop();
+        music.play();
 		game.state.start("Tutorial");
 }

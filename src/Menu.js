@@ -1,4 +1,5 @@
 function preload() {
+    game.load.image('replay', 'assets/img/replay_btn.png');
     game.load.image('play', 'assets/img/btn_play.png');
     game.load.spritesheet('fairy', 'assets/img/fairy.png', 128, 128);
     game.load.image('heal_1', 'assets/img/items/muffin.png');
@@ -17,6 +18,11 @@ function preload() {
     game.load.image('tutorial', 'assets/img/p2.png');
     game.load.image('gameover', 'assets/img/gameover.png');
     game.load.audio('music', 'assets/sound/main.mp3');
+    game.load.audio('overmusic', 'assets/sound/gameover.mp3');
+    game.load.audio('healmusic', 'assets/sound/heal.mp3');
+    game.load.audio('buffmusic', 'assets/sound/buff.mp3');
+    game.load.audio('attackmusic', 'assets/sound/attack.mp3');
+    game.load.audio('ouch', 'assets/sound/ouch.mp3');
 }
 
 function createMenu(){
@@ -25,8 +31,8 @@ function createMenu(){
 		var playButton = game.add.button(game.world.width/2,game.world.height - 150,'play', playTutorial,this);
 		playButton.anchor.setTo(0.5,0.5);
         music = game.add.audio('music');
-        // music.loop = true;
-        // music.play();
+        music.loop = true;
+        music.play();
 	}
 
 function playTutorial(){

@@ -42,6 +42,11 @@ function create(){
     timer_twitter.start();
 
     cursors = game.input.keyboard.createCursorKeys();
+
+    healmusic = game.add.audio('healmusic');
+    buffmusic = game.add.audio('buffmusic');
+    attackmusic = game.add.audio('attackmusic');
+    ouchsound = game.add.audio('ouch');
 }
 
 function update(){
@@ -161,6 +166,7 @@ function spawnSpells(){
 
 function fairyStatus(player, spell){
     if (spell.spell_type == 'heal') {
+        healmusic.play();
         player.current_health += game.rnd.integerInRange(3, 15);
         score += 10;
         score_text.text = 'score:' + score;
@@ -168,6 +174,8 @@ function fairyStatus(player, spell){
             player.current_health = player.max_health;
         }
     } else if (spell.spell_type == 'attack') {
+        attackmusic.play();
+        ouchsound.play();
         player.current_health -= game.rnd.integerInRange(5, 20);
         score -= 50;
         score_text.text = 'score:' + score;
@@ -175,6 +183,7 @@ function fairyStatus(player, spell){
             player.current_health = 0;
         }
     } else if (spell.spell_type == 'buff') {
+        buffmusic.play();
         spells_speed = Math.floor(spells_speed/2);
         score += 15;
         score_text.text = 'score:' + score;
@@ -182,6 +191,7 @@ function fairyStatus(player, spell){
     health_text.text = player.current_health + '/' + player.max_health;
     spell.kill();
     if (player.current_health <= 0){
+        music.stop();
         game.state.start("Over");
     }
 }
