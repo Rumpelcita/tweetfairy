@@ -17,7 +17,9 @@ function create(){
     player.max_health = 75;
     health_tooltip = game.add.text(42, 10, 'health:', { font: "bold 32px brain_flowerregular", fill: '#000' });
     health_text = game.add.text(115, 10, player.current_health + '/' + player.max_health, { font: "bold 32px brain_flowerregular", fill: '#ff0707' });
-    health_sprite = game.add.sprite(16, 16, 'heart');
+    health_sprite = game.add.sprite(16, 18, 'heart');
+
+    //var tweets = new Twitter();
 
     spells = game.add.group();
     game.physics.enable(spells);
@@ -136,4 +138,5 @@ function fairyStatus(player, spell){
 var game = new Phaser.Game(400, 625, Phaser.AUTO, '');
 game.state.add("Menu", { preload: preload, create: createMenu } );
 game.state.add("Game",{ create: create, update: update, render: render });
+game.state.add("Over", { create: createGameOver } );
 game.state.start("Menu");
