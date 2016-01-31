@@ -1,4 +1,5 @@
 function create(){
+    game.stage.backgroundColor = '#ffffff';
     background = game.add.tileSprite(0, 0, 402, 626, "background");
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
