@@ -3,13 +3,18 @@ function create(){
     game.stage.backgroundColor = '#ffffff';
     background = game.add.tileSprite(0, 0, 402, 626, "background");
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    twitter_sprite = game.add.sprite(game.world.width - 375, game.world.height - 75, 'tweet');
-    twitter_user_text = game.add.text(game.world.width - 345, game.world.height - 80, '@TweetfairyGame', { font: "bold 22px brain_flowerregular", fill: '#28a9e0' });
-    twitter_text = game.add.text(game.world.width - 345, game.world.height - 60, 'Casting spells...', { font: "bold 22px brain_flowerregular", fill: '#000', wordWrap: true, wordWrapWidth: 340 });
+    twitter_sprite = game.add.sprite(game.world.width - 375, game.world.height - 96, 'tweet');
+    twitter_user_text = game.add.text(game.world.width - 345, game.world.height - 96, '@TweetfairyGame', { font: "bold 22px brain_flowerregular", fill: '#28a9e0' });
+    twitter_text = game.add.text(game.world.width - 345, game.world.height - 74, 'Casting spells...', { font: "bold 18px brain_flowerregular", fill: '#000', wordWrap: true, wordWrapWidth: 340 });
+    if (adblock == 1){
+        adblock_text = game.add.text(game.world.width - 345, game.world.height - 55, 'Your adblocker is messing with Tweetfairy. \n PLease disable it for this page.', { font: "bold 22px brain_flowerregular", fill: '#ff0707', wordWrap: true, wordWrapWidth: 340 });
+    } else {
+        adblock_text = null;
+    }
 
     score = 0;
     score_text = game.add.text(252, 15, 'score:' + score, { font: "bold 32px brain_flowerregular", fill: '#000' });
-    player = game.add.sprite(game.world.width/2, game.world.height - 230, 'fairy');
+    player = game.add.sprite(game.world.width/2, game.world.height - 235, 'fairy');
     game.physics.arcade.enable(player);
     player.body.bounce.y = 0.2;
     player.body.gravity.y = 0;
@@ -20,10 +25,10 @@ function create(){
     player.animations.add('left', [3,4,3], 14, false);
     player.animations.play('center');
 
+    player.invincible = 0;
     player.current_health = 75;
     player.max_health = 75;
-    health_tooltip = game.add.text(52, 15, 'health:', { font: "bold 32px brain_flowerregular", fill: '#000' });
-    health_text = game.add.text(115, 15, player.current_health + '/' + player.max_health, { font: "bold 32px brain_flowerregular", fill: '#ff0707' });
+    health_text = game.add.text(52, 15, player.current_health + '/' + player.max_health, { font: "bold 32px brain_flowerregular", fill: '#ff0707' });
     health_sprite = game.add.sprite(18, 18, 'heart');
 
     spells = game.add.group();
@@ -66,18 +71,17 @@ function update(){
     game.physics.arcade.overlap(player, spells, fairyStatus, null, this);
 
     player.body.velocity.x = 0;
-//    player.animations.play('center');
 
-    if (cursors.left.isDown)
+    if (cursors.left.isDown || (game.input.pointer1.x < (game.world.width/2) - 1 && game.input.pointer1.isDown))
     {
         //  Move to the left
-        player.body.velocity.x = -185;
+        player.body.velocity.x = -200;
         player.animations.play('left');
     }
-    else if (cursors.right.isDown)
+    else if (cursors.right.isDown || (game.input.pointer1.x > (game.world.width/2) + 1 && game.input.pointer1.isDown))
     {
         //  Move to the right
-        player.body.velocity.x = 185;
+        player.body.velocity.x = 200;
         player.animations.play('right');
     } else {
         player.animations.play('center');
@@ -85,6 +89,7 @@ function update(){
 }
 
 function render(){
+    //game.debug.pointer(game.input.pointer1);
     // game.debug.body(player);
     // spells.forEach(function(spell){
     //     game.debug.body(spell);
@@ -172,10 +177,13 @@ function fairyStatus(player, spell){
         if (player.current_health > player.max_health){
             player.current_health = player.max_health;
         }
-    } else if (spell.spell_type == 'attack') {
+    } else if (spell.spell_type == 'attack' && player.invincible == 0) {
         attackmusic.play();
         ouchsound.play();
         player.current_health -= game.rnd.integerInRange(5, 20);
+        var tween = game.add.tween(player).to( { alpha:0 }, 150, Phaser.Easing.Bounce.InOut, true, 0, 2);
+        player.invincible = 1;
+        tween.onComplete.add(restoreFairy, this);
         score -= 50;
         score_text.text = 'score:' + score;
         if (player.current_health <= 0){
@@ -195,14 +203,20 @@ function fairyStatus(player, spell){
     }
 }
 
+function restoreFairy(){
+    player.invincible = 0;
+    player.alpha = 1;
+}
+
 function spawnTwitter(){
     tweets = null;
     tweets = new Twitter();
 }
 
 var game = new Phaser.Game(400, 625, Phaser.AUTO, '');
-game.state.add("Menu", { preload: preload, create: createMenu } );
+game.state.add("Boot", { preload: preload, create: createBoot, update: updateBoot } );
+game.state.add("Menu", { create: createMenu } );
 game.state.add("Tutorial", { create: createTutorial } );
 game.state.add("Game",{ create: create, update: update, render: render });
 game.state.add("Over", { create: createGameOver } );
-game.state.start("Menu");
+game.state.start("Boot");

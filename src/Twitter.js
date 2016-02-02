@@ -1,4 +1,5 @@
 function Twitter() {
+    adblock = 0;
     spell_count = 0;
     spell_deck = {
         attacks : [],
@@ -29,22 +30,26 @@ function Twitter() {
         params,
         function (reply) {
             replies = reply.statuses;
-            if (replies.length != -1){
+            if (replies != 'undefined' && replies.length != -1){
+                adblock = 0;
                 for (var i = 0; i < replies.length; i++){
                     var tweet = replies[i].text;
                     var twitter_user = replies[i].user.screen_name;
+                    var search = tweet.toLowerCase();
 
-                    if (tweet.search("#tfatk") != -1){
+                    if (search.search("#tfatk") != -1){
                         spell_deck.attacks.push([twitter_user, tweet]);
                         spell_count ++;
-                    } else if (tweet.search("#tfheal") != -1){
+                    } else if (search.search("#tfheal") != -1){
                         spell_deck.heals.push([twitter_user, tweet]);
                         spell_count ++;
-                    } else if (tweet.search("#tfbuff") != -1){
+                    } else if (search.search("#tfbuff") != -1){
                         spell_deck.buffs.push([twitter_user, tweet]);
                         spell_count ++;
                     }
                 }
+            } else {
+                adblock = 1;
             }
         }
     );
