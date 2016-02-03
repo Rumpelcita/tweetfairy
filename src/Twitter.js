@@ -7,8 +7,7 @@ function Twitter() {
         buffs : [],
     }
     var cb = new Codebird;
-    cb.setConsumerKey();
-    cb.setToken();
+
     cb.__call(
     "oauth2_token",
     {},

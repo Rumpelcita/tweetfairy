@@ -1,5 +1,4 @@
 function create(){
-    loading = 1;
     game.stage.backgroundColor = '#ffffff';
     background = game.add.tileSprite(0, 0, 402, 626, "background");
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -56,10 +55,9 @@ function create(){
 
 function update(){
     background.tilePosition.y += 2;
-    if (loading == 0){
-        score += 1;
-        score_text.text = 'score:' + score;
-    }
+    score += 1;
+    score_text.text = 'score:' + score;
+
     spells.forEach(function(spell){
         if (spell.inWorld == false){
             spell.kill();
@@ -158,12 +156,8 @@ function spawnSpells(){
             spell.body.setSize(90, 100, 5, 0);
             spell.body.gravity.y = spells_speed;
             spells.add(spell);
-            loading = 0;
         } else {
             spawnSpells();
-            loading = 1;
-            twitter_user_text.text = '@TweetfairyGame';
-            twitter_text.text = 'Casting spells...';
         }
     }
 }
