@@ -25,10 +25,13 @@ function create(){
     player.animations.play('center');
 
     player.invincible = 0;
-    player.current_health = 75;
-    player.max_health = 75;
-    health_text = game.add.text(52, 15, player.current_health + '/' + player.max_health, { font: "bold 32px brain_flowerregular", fill: '#ff0707' });
-    health_sprite = game.add.sprite(18, 18, 'heart');
+    player.current_health = 3;
+    player.max_health = 3;
+    lives = []
+    for (var i = 0; i <= player.current_health - 1; i++){
+        addLife();
+        console.log("function called");
+    }
 
     spells = game.add.group();
     game.physics.enable(spells);
@@ -165,33 +168,34 @@ function spawnSpells(){
 function fairyStatus(player, spell){
     if (spell.spell_type == 'heal') {
         healmusic.play();
-        player.current_health += game.rnd.integerInRange(3, 15);
         score += 10;
         score_text.text = 'score:' + score;
-        if (player.current_health > player.max_health){
-            player.current_health = player.max_health;
+        if (player.current_health < player.max_health){
+            player.current_health += 1;
+            addLife();
         }
     } else if (spell.spell_type == 'attack' && player.invincible == 0) {
         attackmusic.play();
         ouchsound.play();
-        player.current_health -= game.rnd.integerInRange(5, 20);
-        var tween = game.add.tween(player).to( { alpha:0 }, 150, Phaser.Easing.Bounce.InOut, true, 0, 2);
+        player.current_health -= 1;
+        if (lives.length > 0){
+            lives[lives.length-1].kill();
+            lives.splice(-1, 1);
+            console.log(lives);
+        }
+        var tween = game.add.tween(player).to( { alpha:0 }, 250, Phaser.Easing.Bounce.InOut, true, 0, 2);
         player.invincible = 1;
         tween.onComplete.add(restoreFairy, this);
         score -= 50;
         score_text.text = 'score:' + score;
-        if (player.current_health <= 0){
-            player.current_health = 0;
-        }
     } else if (spell.spell_type == 'buff') {
         buffmusic.play();
         spells_speed = Math.floor(spells_speed/2);
         score += 15;
         score_text.text = 'score:' + score;
     }
-    health_text.text = player.current_health + '/' + player.max_health;
     spell.kill();
-    if (player.current_health <= 0){
+    if (player.current_health == 0){
         music.stop();
         game.state.start("Over");
     }
@@ -205,6 +209,13 @@ function restoreFairy(){
 function spawnTwitter(){
     tweets = null;
     tweets = new Twitter();
+}
+
+function addLife() {
+    var life = game.add.sprite(0,0,'heart');
+    life.y = 18;
+    life.x = 18+(lives.length*35);
+    lives.push(life);
 }
 
 var game = new Phaser.Game(400, 625, Phaser.AUTO, '');

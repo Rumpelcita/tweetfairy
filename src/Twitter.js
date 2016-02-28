@@ -7,7 +7,8 @@ function Twitter() {
         buffs : [],
     }
     var cb = new Codebird;
-
+    cb.setConsumerKey("5rDq4y6l7nVYFd94Zb0prCGh9", "GZjD6RTQyaToBzI58QM8hX9WCsrzAqoIsUU8K72Z5cUbeXpXtv");
+    cb.setToken("4865898394-PlQgV36hf0P67zrg8v9ZOvoS97m1ik6TM0O6URS", "dmImDQOKEo1GyeAZXHFWjpo3Vwk2wq54TydSdbhquGmVq");
     cb.__call(
     "oauth2_token",
     {},
@@ -22,7 +23,7 @@ function Twitter() {
     }
     );
     var params = {
-    q: "TweetfairyGame"
+    q: "#tweetfairygame"
     };
     cb.__call(
         "search_tweets",
@@ -39,10 +40,14 @@ function Twitter() {
                     if (search.search("#tfatk") != -1){
                         spell_deck.attacks.push([twitter_user, tweet]);
                         spell_count ++;
-                    } else if (search.search("#tfheal") != -1){
+                    }
+
+                    if (search.search("#tfheal") != -1){
                         spell_deck.heals.push([twitter_user, tweet]);
                         spell_count ++;
-                    } else if (search.search("#tfbuff") != -1){
+                    }
+
+                    if (search.search("#tfbuff") != -1){
                         spell_deck.buffs.push([twitter_user, tweet]);
                         spell_count ++;
                     }

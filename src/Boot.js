@@ -3,6 +3,16 @@ function preload() {
 }
 
 function createBoot(){
+/*    // Load the API
+    kongregateAPI.loadAPI(onComplete);
+
+    // Callback function
+    function onComplete(){
+    // Set the global kongregate API object
+      kongregate = kongregateAPI.getAPI();
+    }
+*/
+
     if (!game.device.desktop){
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         game.scale.setMinMax(400, 625, 512, 800);
