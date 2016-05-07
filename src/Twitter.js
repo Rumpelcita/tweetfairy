@@ -7,8 +7,8 @@ function Twitter() {
         buffs : [],
     }
     var cb = new Codebird;
-    cb.setConsumerKey("5rDq4y6l7nVYFd94Zb0prCGh9", "GZjD6RTQyaToBzI58QM8hX9WCsrzAqoIsUU8K72Z5cUbeXpXtv");
-    cb.setToken("4865898394-PlQgV36hf0P67zrg8v9ZOvoS97m1ik6TM0O6URS", "dmImDQOKEo1GyeAZXHFWjpo3Vwk2wq54TydSdbhquGmVq");
+    cb.setConsumerKey(consumer_key, consumer_key_thingie);
+    cb.setToken(token, token_thingie);
     cb.__call(
     "oauth2_token",
     {},

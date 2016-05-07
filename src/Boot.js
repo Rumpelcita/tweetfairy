@@ -13,6 +13,30 @@ function createBoot(){
     }
 */
 
+    // ngio = new Newgrounds.io.core("43112:LNio3QBm", "a017d8ab6cb96cbdc655beaecf586441");
+    // 
+    // /* handle loaded scores */
+    // function onScoreboardsLoaded(result) {
+    //     if (result.success) scoreboards = result.scoreboards;
+    // }
+    // ngio.queueCall("ScoreBoard.getBoards", {}, onScoreboardsLoaded);
+    // ngio.executeQueue();
+    // 
+    // function postScore(board_name, score_value) {
+    // 
+    //     /* If there is no user attached to our ngio object, it means the user isn't logged in and we can't post anything */
+    //     if (!ngio.user) return;
+    // 
+    //     var score;
+    // 
+    //     for (var i = 0; i < scoreboards.length; i++) {
+    // 
+    //         scoreboard = scoreboards[i];
+    // 
+    //         ngio.call('ScoreBoard.post', {id:scoreboard.id, value:score_value});
+    //     }
+    // }
+
     if (!game.device.desktop){
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         game.scale.setMinMax(400, 625, 512, 800);

@@ -25,12 +25,11 @@ function create(){
     player.animations.play('center');
 
     player.invincible = 0;
-    player.current_health = 3;
+    player.current_health = 1;
     player.max_health = 3;
     lives = []
     for (var i = 0; i <= player.current_health - 1; i++){
         addLife();
-        console.log("function called");
     }
 
     spells = game.add.group();
@@ -181,7 +180,6 @@ function fairyStatus(player, spell){
         if (lives.length > 0){
             lives[lives.length-1].kill();
             lives.splice(-1, 1);
-            console.log(lives);
         }
         var tween = game.add.tween(player).to( { alpha:0 }, 250, Phaser.Easing.Bounce.InOut, true, 0, 2);
         player.invincible = 1;
