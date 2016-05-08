@@ -11,7 +11,6 @@ function create(){
         adblock_text = null;
     }
     
-    buffed = false;
     level_score = 0;
     score = 0;
     score_text = game.add.text(252, 15, 'score:' + score, { font: "bold 32px brain_flowerregular", fill: '#000' });
@@ -27,7 +26,8 @@ function create(){
     player.animations.play('center');
 
     player.buff = 0;
-    player.max_buff = 3;
+    player.min_buff = 30;
+    player.max_buff = 80;
     player.invincible = 0;
     player.current_health = 1;
     player.max_health = 3;
@@ -92,16 +92,18 @@ function update(){
         player.animations.play('center');
     }
     
-    if (player.buff == player.max_buff && space_key.isDown){
+    if (player.buff >= player.min_buff && space_key.isDown){
         if (cursors.right.isDown){
-            player.body.velocity.x = 375;
-            buffed = true;
+            player.body.velocity.x = 500;
+            player.buff-=2;
+            console.log(player.buff);
             console.log("dashing");
         } else if (cursors.left.isDown) {
-            player.body.velocity.x -= 375;
-            buffed = true;
+            player.body.velocity.x -= 500;
+            player.buff-=2;
+            console.log(player.buff);
             console.log("dashing");
-        }
+        }      
     }    
 }
 
@@ -118,10 +120,7 @@ function menu(){
 }
 
 function set_spell_speed(){
-    if (level_score == 0 && score > 500 ){
-        spells_speed += Math.floor(spells_speed / 3);
-        level_score = score;
-    } else if (score > (level_score + 500)) {
+    if (score > (level_score + 500)) {
         spells_speed += Math.floor(spells_speed / 3);
         level_score = score;        
     }   
@@ -216,7 +215,7 @@ function fairyStatus(player, spell){
     } else if (spell.spell_type == 'buff') {
         buffmusic.play();
         if (player.buff < player.max_buff){
-            player.buff ++;
+            player.buff += 10;
             console.log(player.buff);
         }
         score += 15;
